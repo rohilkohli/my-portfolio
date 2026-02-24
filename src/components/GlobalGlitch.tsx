@@ -59,7 +59,7 @@ export function GlobalGlitch() {
           ],
           x: [-5, 5, -5, 0]
         }}
-        transition={{ duration: 0.3, ease: "steps(2)" }}
+        transition={{ duration: 0.3, ease: "linear" }}
         className="absolute inset-0 bg-white/10 backdrop-invert"
       />
       

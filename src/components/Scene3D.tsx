@@ -153,12 +153,12 @@ export function Scene3D() {
         
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
         
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom luminanceThreshold={0.2} mipmapBlur intensity={1.5} radius={0.5} />
           <Glitch 
-            delay={[1.5, 3.5]} 
-            duration={[0.1, 0.3]} 
-            strength={[0.1, 0.2]} 
+            delay={new THREE.Vector2(1.5, 3.5)} 
+            duration={new THREE.Vector2(0.1, 0.3)} 
+            strength={new THREE.Vector2(0.1, 0.2)} 
             mode={GlitchMode.SPORADIC} 
             active 
             ratio={0.85} 

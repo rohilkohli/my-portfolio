@@ -16,6 +16,7 @@ import { MarqueeBanner } from './components/MarqueeBanner';
 import { Scene3D } from './components/Scene3D';
 import { GlitchText } from './components/GlitchText';
 import { GlobalGlitch } from './components/GlobalGlitch';
+import { Hologram } from './components/Hologram';
 
 function Home() {
   const { scrollY, scrollYProgress } = useScroll();
@@ -159,10 +160,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-import { Hologram } from './components/Hologram';
-
-// ... inside App component ...
 
       {/* Philosophy / About Section */}
       <section id="about" className="relative z-10 py-32 px-6 bg-[#141414] overflow-hidden">

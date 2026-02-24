@@ -163,7 +163,7 @@ export function Scene3D() {
             active 
             ratio={0.85} 
           />
-          <ChromaticAberration offset={[0.002, 0.002]} blendFunction={BlendFunction.NORMAL} />
+          <ChromaticAberration offset={new THREE.Vector2(0.002, 0.002)} blendFunction={BlendFunction.NORMAL} />
           <Scanline density={1.5} opacity={0.05} />
           <Noise opacity={0.05} />
         </EffectComposer>

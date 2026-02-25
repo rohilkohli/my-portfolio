@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function HorizontalScrollProjects() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const totalSections = projects.length + 1; // +1 for the title section
@@ -23,6 +24,42 @@ export function HorizontalScrollProjects() {
           snap: 1 / (totalSections - 1),
           end: () => "+=" + (sectionRef.current?.offsetWidth || 0),
         }
+      });
+
+      panelRefs.current.forEach((panel, index) => {
+        if (!panel) return;
+
+        const card = panel.querySelector('.project-card-shell');
+        const cardImage = panel.querySelector('.project-image-parallax');
+        const antiGridOffset = [-13, 14, 2][index % 3];
+
+        if (!card || !cardImage) return;
+
+        gsap.set(card, {
+          yPercent: antiGridOffset,
+        });
+
+        gsap.to(card, {
+          yPercent: antiGridOffset + (index % 2 === 0 ? -9 : 9),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: triggerRef.current,
+            scrub: 1,
+            start: 'top top',
+            end: () => `+=${sectionRef.current?.offsetWidth || 0}`,
+          },
+        });
+
+        gsap.to(cardImage, {
+          xPercent: -18 - index * 4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: triggerRef.current,
+            scrub: 1,
+            start: 'top top',
+            end: () => `+=${sectionRef.current?.offsetWidth || 0}`,
+          },
+        });
       });
     }, triggerRef);
 
@@ -48,9 +85,15 @@ export function HorizontalScrollProjects() {
             </div>
           </div>
           {projects.map((project, index) => (
-            <div key={project.id} className="h-full w-screen flex items-center justify-center px-20 border-r border-white/5 relative group shrink-0">
+            <div
+              key={project.id}
+              ref={(el) => {
+                panelRefs.current[index] = el;
+              }}
+              className="h-full w-screen flex items-center justify-center px-20 border-r border-white/5 relative group shrink-0"
+            >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00f0ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <div className="w-full max-w-4xl">
+              <div className="w-full max-w-4xl project-card-shell">
                 <span className="font-mono text-xs text-[#00f0ff] mb-4 block">0{index + 1} / 0{projects.length}</span>
                 <Card3D 
                   id={project.id}

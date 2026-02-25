@@ -39,10 +39,9 @@ export function Card3D({ id, title, subtitle, description, image }: CardProps) {
   const spotlightY = useTransform(mouseY, [-0.5, 0.5], ['0%', '100%']);
   const spotlightGradient = useMotionTemplate`radial-gradient(600px circle at ${spotlightX} ${spotlightY}, rgba(255,255,255,0.1), transparent 40%)`;
 
-  const rgbOffset = useTransform(chroma, [0, 1], [0, 8]);
-  const redLayerTransform = useMotionTemplate`translateX(calc(${rgbOffset}px * -1))`;
-  const blueLayerTransform = useMotionTemplate`translateX(${rgbOffset}px)`;
-  const chromaOpacity = useTransform(chroma, [0, 1], [0, 0.45]);
+  const redLayerX = useTransform(chroma, [0, 1], [0, -8]);
+  const blueLayerX = useTransform(chroma, [0, 1], [0, 8]);
+  const chromaOpacity = useTransform(chroma, [0, 1], [0, 0.4]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -151,14 +150,14 @@ export function Card3D({ id, title, subtitle, description, image }: CardProps) {
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-cover mix-blend-screen pointer-events-none saturate-[1.6]"
-                style={{ transform: redLayerTransform, opacity: chromaOpacity, filter: 'drop-shadow(0 0 8px rgba(255, 0, 90, 0.45))' }}
+                style={{ x: redLayerX, opacity: chromaOpacity, filter: 'drop-shadow(0 0 8px rgba(255, 0, 90, 0.45))' }}
               />
               <motion.img
                 src={image}
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-cover mix-blend-screen pointer-events-none saturate-[1.6]"
-                style={{ transform: blueLayerTransform, opacity: chromaOpacity, filter: 'drop-shadow(0 0 8px rgba(0, 200, 255, 0.5))' }}
+                style={{ x: blueLayerX, opacity: chromaOpacity, filter: 'drop-shadow(0 0 8px rgba(0, 200, 255, 0.5))' }}
               />
             </div>
           )}

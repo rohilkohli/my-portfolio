@@ -19,7 +19,7 @@ export function TerminalContact() {
   }, [logs]);
 
   const activateAdminMode = () => {
-    document.documentElement.classList.add('admin-mode-active');
+    document.body.classList.add('admin-mode-active');
     setLogs(prev => [
       ...prev,
       '> ADMIN_MODE accepted.',
@@ -29,10 +29,18 @@ export function TerminalContact() {
     ]);
 
     window.setTimeout(() => {
-      document.documentElement.classList.remove('admin-mode-active');
+      document.body.classList.remove('admin-mode-active');
       setLogs(prev => [...prev, '> Admin mode ended. Cyan systems restored.']);
     }, 5000);
   };
+
+
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('admin-mode-active');
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

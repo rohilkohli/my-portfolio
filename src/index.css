@@ -168,16 +168,12 @@ body {
   --accent-color: #00f0ff;
 }
 
-.admin-mode-active {
+body.admin-mode-active {
   --accent-color: #ff6a00;
-  animation: global-glitch-shift 220ms steps(2, end) infinite;
+  filter: hue-rotate(-24deg) saturate(1.3) contrast(1.05);
 }
 
-.admin-mode-active body {
-  filter: hue-rotate(-24deg) saturate(1.45) contrast(1.08);
-}
-
-.admin-mode-active::before {
+body.admin-mode-active::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -192,14 +188,6 @@ body {
   );
   mix-blend-mode: screen;
   animation: admin-scan 160ms linear infinite;
-}
-
-@keyframes global-glitch-shift {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-1px, 1px); }
-  50% { transform: translate(1px, -1px); }
-  75% { transform: translate(1px, 1px); }
-  100% { transform: translate(0, 0); }
 }
 
 @keyframes admin-scan {

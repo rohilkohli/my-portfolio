@@ -162,3 +162,35 @@ body {
   80% { transform: translate(-2px, 2px) }
   100% { transform: translate(0) }
 }
+
+
+:root {
+  --accent-color: #00f0ff;
+}
+
+body.admin-mode-active {
+  --accent-color: #ff6a00;
+  filter: hue-rotate(-24deg) saturate(1.3) contrast(1.05);
+}
+
+body.admin-mode-active::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 106, 0, 0.08) 0,
+    rgba(255, 106, 0, 0.08) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  mix-blend-mode: screen;
+  animation: admin-scan 160ms linear infinite;
+}
+
+@keyframes admin-scan {
+  0% { opacity: 0.15; transform: translateY(0); }
+  100% { opacity: 0.35; transform: translateY(6px); }
+}

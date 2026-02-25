@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Terminal, Send, CheckCircle } from 'lucide-react';
 
 export function TerminalContact() {
   const [input, setInput] = useState('');
   const [logs, setLogs] = useState<string[]>([
-    "> System initialized...",
-    "> Connection established.",
+    '> System initialized...',
+    '> Connection established.',
     "> Type 'help' for available commands or just say hi."
   ]);
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
@@ -18,6 +18,30 @@ export function TerminalContact() {
     }
   }, [logs]);
 
+  const activateAdminMode = () => {
+    document.body.classList.add('admin-mode-active');
+    setLogs(prev => [
+      ...prev,
+      '> ADMIN_MODE accepted.',
+      '> Triggering full-stack glitch layer...',
+      '> Primary spectrum shifted to neon orange for 5s.',
+      '> Special Recognition: Nawab Protocol // UNLOCKED'
+    ]);
+
+    window.setTimeout(() => {
+      document.body.classList.remove('admin-mode-active');
+      setLogs(prev => [...prev, '> Admin mode ended. Cyan systems restored.']);
+    }, 5000);
+  };
+
+
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('admin-mode-active');
+    };
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -28,57 +52,65 @@ export function TerminalContact() {
 
     // Command handling
     const command = userMessage.toLowerCase();
-    
+
     if (command === 'help') {
-      setLogs(prev => [...prev, 
-        "> Available commands:", 
-        "  - help: Show this list",
-        "  - clear: Clear terminal",
-        "  - about: Who am I?",
-        "  - projects: List my works",
-        "  - email: Get contact email",
-        "  - github: Open GitHub profile",
-        "  - [any text]: Send me a message"
+      setLogs(prev => [
+        ...prev,
+        '> Available commands:',
+        '  - help: Show this list',
+        '  - clear: Clear terminal',
+        '  - about: Who am I?',
+        '  - projects: List my works',
+        '  - email: Get contact email',
+        '  - github: Open GitHub profile',
+        '  - [any text]: Send me a message'
       ]);
       return;
     }
 
     if (command === 'clear') {
-      setLogs(["> Terminal cleared.", "> Ready."]);
+      setLogs(['> Terminal cleared.', '> Ready.']);
       return;
     }
 
     if (command === 'about') {
-      setLogs(prev => [...prev, 
-        "> Rohil Kohli",
-        "> Software Developer & B.Tech Student at BITS Pilani.",
-        "> Passionate about building digital experiences that matter."
+      setLogs(prev => [
+        ...prev,
+        '> Rohil Kohli',
+        '> Software Developer & B.Tech Student at BITS Pilani.',
+        '> Passionate about building digital experiences that matter.'
       ]);
       return;
     }
 
     if (command === 'projects') {
-      setLogs(prev => [...prev, 
-        "> Fetching projects...",
-        "  1. Fintech Dashboard",
-        "  2. Neon Commerce",
-        "  3. AI Assistant",
-        "  4. Crypto Exchange",
-        "  5. Spatial Audio",
-        "  6. Health Tracker",
+      setLogs(prev => [
+        ...prev,
+        '> Fetching projects...',
+        '  1. Fintech Dashboard',
+        '  2. Neon Commerce',
+        '  3. AI Assistant',
+        '  4. Crypto Exchange',
+        '  5. Spatial Audio',
+        '  6. Health Tracker',
         "> Type 'help' for more."
       ]);
       return;
     }
 
     if (command === 'email') {
-      setLogs(prev => [...prev, "> Contact: hello@portfolio.design"]);
+      setLogs(prev => [...prev, '> Contact: hello@portfolio.design']);
       return;
     }
 
     if (command === 'github') {
-      setLogs(prev => [...prev, "> Opening GitHub..."]);
+      setLogs(prev => [...prev, '> Opening GitHub...']);
       window.open('https://github.com/rohilkohli', '_blank');
+      return;
+    }
+
+    if (command === 'admin_mode' || command === 'unlock_nawab' || command === 'bits_mode') {
+      activateAdminMode();
       return;
     }
 
@@ -87,15 +119,15 @@ export function TerminalContact() {
 
     // Simulate sending
     setTimeout(() => {
-      setLogs(prev => [...prev, "> Transmitting data packets...", "> Encrypting message..."]);
-      
+      setLogs(prev => [...prev, '> Transmitting data packets...', '> Encrypting message...']);
+
       setTimeout(() => {
-        setLogs(prev => [...prev, "> Message sent successfully.", "> Status: 200 OK"]);
+        setLogs(prev => [...prev, '> Message sent successfully.', '> Status: 200 OK']);
         setStatus('sent');
-        
+
         setTimeout(() => {
-            setStatus('idle');
-            setLogs(prev => [...prev, "> Ready for next command."]);
+          setStatus('idle');
+          setLogs(prev => [...prev, '> Ready for next command.']);
         }, 3000);
       }, 1500);
     }, 800);
@@ -118,13 +150,13 @@ export function TerminalContact() {
 
       {/* Terminal Body */}
       <div className="p-4 h-64 flex flex-col">
-        <div 
+        <div
           ref={scrollRef}
           className="flex-1 overflow-y-auto space-y-1 mb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent pr-2"
         >
           {logs.map((log, i) => (
-            <motion.div 
-              key={i}
+            <motion.div
+              key={`${log}-${i}`}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               className={`${log.startsWith('> User:') ? 'text-[#00f0ff]' : 'text-white/70'}`}
@@ -133,7 +165,7 @@ export function TerminalContact() {
             </motion.div>
           ))}
           {status === 'sending' && (
-            <motion.div 
+            <motion.div
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
               className="text-[#00f0ff]"
@@ -150,13 +182,13 @@ export function TerminalContact() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={status === 'sent' ? "Message sent." : "Type your message..."}
+            placeholder={status === 'sent' ? 'Message sent.' : 'Type your message...'}
             disabled={status !== 'idle'}
             className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/30 focus:ring-0"
             autoFocus
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={status !== 'idle' || !input.trim()}
             className="text-white/40 hover:text-[#00f0ff] disabled:opacity-30 disabled:hover:text-white/40 transition-colors"
           >

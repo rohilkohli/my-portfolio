@@ -10,39 +10,42 @@ import { MetallicButton } from './components/MetallicButton';
 import { ChevronDown, Github, Twitter, Linkedin, Mail } from 'lucide-react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import ProjectDetail from './components/ProjectDetail';
-
-import { MarqueeBanner } from './components/MarqueeBanner';
-
-import { Scene3D } from './components/Scene3D';
-import { GlitchText } from './components/GlitchText';
-import { GlobalGlitch } from './components/GlobalGlitch';
-import { Hologram } from './components/Hologram';
+import { Magnetic } from './components/Magnetic';
+import { CyberGrid } from './components/CyberGrid';
+import { SkillsSphere } from './components/SkillsSphere';
+import { TerminalContact } from './components/TerminalContact';
+import { projects } from './data/projects';
+import { DynamicBackground } from './components/DynamicBackground';
+import { ScrollProgress } from './components/ScrollProgress';
+import { VelocityScroll } from './components/VelocityScroll';
+import { ParallaxSection } from './components/ParallaxSection';
+import { SmoothScroll } from './components/SmoothScroll';
+import { HorizontalScrollProjects } from './components/HorizontalScrollProjects';
+import { KineticText } from './components/KineticText';
+import { FlashlightCursor } from './components/FlashlightCursor';
+import { DataStreamFooter } from './components/DataStreamFooter';
+import { SoundToggle } from './components/SoundToggle';
+import { NoiseOverlay } from './components/NoiseOverlay';
 
 function Home() {
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
   const yText = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <>
-      <GlobalGlitch />
+    <SmoothScroll>
+      <FlashlightCursor />
+      <NoiseOverlay />
+      <ScrollProgress />
+      <SoundToggle />
       
-      {/* Glitchy Scroll Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-[#00f0ff] origin-left z-[100] mix-blend-difference"
-        style={{ scaleX }}
-      >
-        <div className="absolute inset-0 bg-white opacity-50 animate-pulse" />
-      </motion.div>
-
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center mix-blend-difference">
         <div className="text-xl font-bold tracking-tighter cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>PORTFOLIO</div>
         <div className="hidden md:flex gap-8 text-sm font-medium tracking-wide">
-          <button onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">WORK</button>
-          <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">ABOUT</button>
-          <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">CONTACT</button>
+          <Magnetic><button onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">WORK</button></Magnetic>
+          <Magnetic><button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">ABOUT</button></Magnetic>
+          <Magnetic><button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:opacity-50 transition-opacity cursor-pointer">CONTACT</button></Magnetic>
         </div>
       </nav>
 
@@ -53,7 +56,6 @@ function Home() {
           style={{ opacity }}
           className="absolute inset-0 z-0"
         >
-          <Scene3D />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-transparent to-[#050505] pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent pointer-events-none" />
         </motion.div>
@@ -63,15 +65,14 @@ function Home() {
           className="relative z-10 text-center max-w-5xl mx-auto pointer-events-none"
         >
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8"
+            transition={{ duration: 0.8 }}
           >
-             <h1 className="text-6xl md:text-9xl font-serif font-medium leading-[0.9] tracking-tight text-metallic-subtle flex flex-col items-center">
-              <GlitchText text="Rohil" />
-              <span className="italic mt-2">Kohli</span>
-            </h1>
+            <span className="font-mono text-sm md:text-base text-[#00f0ff] tracking-[0.2em] mb-4 block">
+              SYSTEM ONLINE // V 2.0
+            </span>
+            <KineticText text="ROHIL KOHLI" className="text-6xl md:text-9xl font-bold tracking-tighter mb-6 mix-blend-difference text-white" />
           </motion.div>
           
           <motion.p 
@@ -88,11 +89,13 @@ function Home() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="pointer-events-auto"
+            className="pointer-events-auto inline-block"
           >
-            <MetallicButton onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
-              My Journey
-            </MetallicButton>
+            <Magnetic>
+              <MetallicButton onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+                My Journey
+              </MetallicButton>
+            </Magnetic>
           </motion.div>
         </motion.div>
 
@@ -105,66 +108,17 @@ function Home() {
       </section>
 
       {/* Marquee Banner */}
-      <MarqueeBanner />
+      <VelocityScroll />
 
-      {/* Work Section */}
-      <section id="work" className="relative z-10 py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 border-b border-white/10 pb-8">
-            <div>
-              <h2 className="text-4xl md:text-6xl font-serif mb-4">Selected Works</h2>
-              <p className="text-white/40">Curated projects from my academic and professional journey</p>
-            </div>
-            <div className="hidden md:block text-right">
-              <p className="font-mono text-xs text-white/40">SCROLL TO EXPLORE</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card3D 
-              title="Fintech Dashboard"
-              subtitle="Finance"
-              description="A real-time financial monitoring tool with complex data visualization and dark mode UI."
-              image="https://picsum.photos/seed/fintech/800/600"
-            />
-            <Card3D 
-              title="Neon Commerce"
-              subtitle="E-Commerce"
-              description="High-performance headless commerce platform built for luxury fashion brands."
-              image="https://picsum.photos/seed/fashion/800/600"
-            />
-            <Card3D 
-              title="AI Assistant"
-              subtitle="Artificial Intelligence"
-              description="Voice-activated AI interface with fluid animations and natural language processing."
-              image="https://picsum.photos/seed/ai/800/600"
-            />
-            <Card3D 
-              title="Crypto Exchange"
-              subtitle="Web3"
-              description="Decentralized exchange interface focusing on trust, transparency and speed."
-              image="https://picsum.photos/seed/crypto/800/600"
-            />
-             <Card3D 
-              title="Spatial Audio"
-              subtitle="Media"
-              description="Immersive audio streaming platform with 3D sound visualization."
-              image="https://picsum.photos/seed/audio/800/600"
-            />
-             <Card3D 
-              title="Health Tracker"
-              subtitle="Wellness"
-              description="Biometric data visualization for elite athletes and performance tracking."
-              image="https://picsum.photos/seed/health/800/600"
-            />
-          </div>
-        </div>
-      </section>
+      {/* Work Section (Horizontal Scroll) */}
+      <div id="work">
+        <HorizontalScrollProjects />
+      </div>
 
       {/* Philosophy / About Section */}
-      <section id="about" className="relative z-10 py-32 px-6 bg-[#141414] overflow-hidden">
-        <Hologram />
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section id="about" className="relative z-10 py-32 px-6 bg-black/40 backdrop-blur-sm border-t border-white/5 overflow-hidden">
+        <DynamicBackground />
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-24">
             <span className="font-mono text-xs text-metallic uppercase tracking-widest mb-6 block">About Me</span>
             <h2 className="text-4xl md:text-7xl font-serif leading-tight mb-8">
@@ -224,86 +178,47 @@ function Home() {
               </p>
             </div>
           </div>
+
+          {/* Technical Arsenal */}
+          <div className="mt-32 flex flex-col items-center justify-center relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00f0ff]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+              <h3 className="font-mono text-xs text-white/40 uppercase tracking-widest mb-12">Technical Arsenal</h3>
+              <SkillsSphere />
+              <p className="text-white/30 text-xs mt-8 font-mono">DRAG TO ROTATE</p>
+          </div>
         </div>
       </section>
 
-      {/* Contact / Footer */}
-      <section id="contact" className="relative z-10 py-32 px-6 border-t border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-          <div>
-            <h2 className="text-5xl md:text-8xl font-serif mb-8 tracking-tight">Let's Talk</h2>
-            <a href="mailto:hello@example.com" className="text-2xl md:text-3xl text-white/60 hover:text-white hover:underline decoration-1 underline-offset-8 transition-colors">
-              hello@portfolio.design
-            </a>
-          </div>
-          
-          <div className="flex flex-col gap-6 items-start md:items-end">
-            <div className="flex gap-4">
-              <a href="https://github.com/rohilkohli" target="_blank" rel="noopener noreferrer" className="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
-                <Github size={24} />
-              </a>
-              <a href="#" className="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
-                <Twitter size={24} />
-              </a>
-              <a href="https://www.linkedin.com/in/rohil-kohli-041022236" target="_blank" rel="noopener noreferrer" className="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
-                <Linkedin size={24} />
-              </a>
-              <a href="#" className="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
-                <Mail size={24} />
-              </a>
-            </div>
-            <p className="text-white/30 text-sm">
-              © 2026 Premium Portfolio. All rights reserved.
-            </p>
-          </div>
+      {/* Contact Section */}
+      <section id="contact" className="py-32 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#00f0ff]/5 to-transparent pointer-events-none" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-12">
+            LET'S <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/20">CONNECT</span>
+          </h2>
+          <TerminalContact />
         </div>
       </section>
-    </>
+
+      <DataStreamFooter />
+    </SmoothScroll>
   );
 }
 
 export default function App() {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Smooth spring animation for the cursor glow
-  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
-  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
-
   return (
     <HashRouter>
       <div className="min-h-screen bg-[#050505] text-white selection:bg-[#00f0ff] selection:text-black font-sans">
         <div className="bg-grid" />
         <div className="bg-scanlines" />
         
-        {/* Custom Cursor Glow */}
-        <motion.div 
-          className="fixed w-[500px] h-[500px] bg-[#00f0ff]/10 rounded-full blur-[100px] pointer-events-none z-0 mix-blend-screen"
-          style={{ 
-            x: springX, 
-            y: springY,
-            translateX: "-50%",
-            translateY: "-50%"
-          }}
-        />
+        <CyberGrid />
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/project" element={<ProjectDetail />} />
+          <Route path="/project/:id" element={<ProjectDetail />} />
         </Routes>
       </div>
     </HashRouter>
   );
 }
-
-
